@@ -4,22 +4,36 @@ import validate from '../utils/validateLogin';
 import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Spinner from './Spinner';
+import { css } from '@emotion/core';
+import ClipLoader from 'react-spinners/ClipLoader';
 
 const Form = () => {
-  const { handleChange, handleSubmit, values, errors } = useForm(
+  const { handleChange, handleSubmit, values, errors, Loading } = useForm(
     submit,
     validate
   );
+  const override = css`
+    display: block;
+    margin: 0 auto;
+    border-color: grey;
+  `;
   function submit() {
-    //need to run the <spinner /> here before the toast
-    toast.success('Submitted successfully');
+    setTimeout(() => {
+      toast.success('Submitted successfully');
+    }, 1500);
   }
 
   return (
     <React.Fragment>
       <ToastContainer />
-
+      <div className="sweet-loading">
+        <ClipLoader
+          css={override}
+          size={60}
+          color={'#00BFFF'}
+          loading={Loading.value}
+        />
+      </div>
       <div className="container">
         <div className="row">
           <div className="col-6 mx-auto">
@@ -42,6 +56,7 @@ const Form = () => {
 
                     {errors.email && <p className="error">{errors.email}</p>}
                   </div>
+
                   <div className="form-group mx-sm-3 mb-2">
                     <label htmlFor="password">Password</label>
                     <input

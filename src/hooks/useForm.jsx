@@ -5,6 +5,7 @@ const useForm = (callback, validate) => {
   const [values, setValues] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [Loading, setLoading] = useState({ value: false });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,12 +19,21 @@ const useForm = (callback, validate) => {
 
     setErrors(validate(values));
     setIsSubmitting(true);
+    setLoading(true);
+    setTimeout(function () {
+      console.log('Called setLoading');
+      setLoading({ value: false });
+    }, 1500);
   };
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
       //call the server
       callback();
-    } else toast.error('Invalid email or password');
+    } else {
+      setTimeout(() => {
+        toast.error('Invalid email or password');
+      }, 1500);
+    }
   }, [errors]);
 
   return {
@@ -31,6 +41,7 @@ const useForm = (callback, validate) => {
     handleSubmit,
     values,
     errors,
+    Loading,
   };
 };
 
