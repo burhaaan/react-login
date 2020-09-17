@@ -1,7 +1,10 @@
 import React from 'react';
 import useForm from '../hooks/useForm';
 import validate from '../utils/validateLogin';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Spinner from './Spinner';
 
 const Form = () => {
   const { handleChange, handleSubmit, values, errors } = useForm(
@@ -9,40 +12,62 @@ const Form = () => {
     validate
   );
   function submit() {
-    console.log('Submitted Successfully');
+    //need to run the <spinner /> here before the toast
+    toast.success('Submitted successfully');
   }
-  return (
-    <form onSubmit={handleSubmit} noValidate>
-      <p className="h4 text-center py-4">Safepay</p>
 
-      <div className="form-group">
-        <label> Email address</label>
-        <input
-          name="email"
-          type="email"
-          className="form-control"
-          placeholder="Enter email"
-          value={values.email}
-          onChange={handleChange}
-        ></input>
-        {errors.email && <p className="error">{errors.email}</p>}
+  return (
+    <React.Fragment>
+      <ToastContainer />
+
+      <div className="container">
+        <div className="row">
+          <div className="col-6 mx-auto">
+            <div className="card">
+              <div className="card-header">
+                <p className="h3 text-center">Safepay</p>
+              </div>
+              <div className="card-body">
+                <form className="form" onSubmit={handleSubmit} noValidate>
+                  <div className="form-group mx-sm-3 mb-2">
+                    <label>Email</label>
+                    <input
+                      name="email"
+                      type="email"
+                      className="form-control border-top-0 border-left-0 border-right-0 pl-0"
+                      value={values.email}
+                      onChange={handleChange}
+                      placeholder="john.doe@example.com"
+                    ></input>
+
+                    {errors.email && <p className="error">{errors.email}</p>}
+                  </div>
+                  <div className="form-group mx-sm-3 mb-2">
+                    <label htmlFor="password">Password</label>
+                    <input
+                      name="password"
+                      type="password"
+                      className="form-control border-top-0 border-left-0 border-right-0 pl-0"
+                      placeholder=".........."
+                      value={values.password}
+                      onChange={handleChange}
+                    ></input>
+                    {errors.password && (
+                      <p className="error">{errors.password}</p>
+                    )}
+                  </div>
+                  <div className="col-12 text-center">
+                    <button type="submit" className="btn btn-dark mt-3 spinner">
+                      LOG IN
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="form-group">
-        <label>Password</label>
-        <input
-          name="password"
-          type="password"
-          className="form-control"
-          placeholder="Password"
-          value={values.password}
-          onChange={handleChange}
-        ></input>
-        {errors.password && <p className="error">{errors.password}</p>}
-      </div>
-      <button type="submit" className="btn btn-primary">
-        Submit
-      </button>
-    </form>
+    </React.Fragment>
   );
 };
 

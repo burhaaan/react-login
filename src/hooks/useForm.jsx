@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 const useForm = (callback, validate) => {
   const [values, setValues] = useState({ email: '', password: '' });
@@ -18,12 +19,11 @@ const useForm = (callback, validate) => {
     setErrors(validate(values));
     setIsSubmitting(true);
   };
-
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
       //call the server
       callback();
-    }
+    } else toast.error('Invalid email or password');
   }, [errors]);
 
   return {
